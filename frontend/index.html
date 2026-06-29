@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Content Agent — YouTube Video Pipeline</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar__brand">
+    <span class="topbar__dot"></span>
+    <span class="topbar__name">Content Agent</span>
+  </div>
+  <div class="topbar__sub">one topic in → script, titles, description, tags & thumbnail concept out</div>
+</header>
+
+<main class="layout">
+
+  <!-- LEFT: input form -->
+  <section class="panel panel--form">
+    <h1 class="panel__title">Run the agent</h1>
+    <p class="panel__hint">Give it a video idea. Everything else is optional context — the agent fills the rest in from your topic alone if you skip it.</p>
+
+    <form id="generate-form">
+
+      <label class="field">
+        <span class="field__label">Video topic <em>required</em></span>
+        <textarea id="topic" name="topic" rows="3" maxlength="300"
+          placeholder="e.g. 5 mistakes beginners make when learning Python" required></textarea>
+      </label>
+
+      <div class="suggestions" id="suggestions">
+        <span class="suggestions__label">Try one:</span>
+        <!-- chips injected by app.js -->
+      </div>
+
+      <div class="field-grid">
+        <label class="field">
+          <span class="field__label">Niche</span>
+          <input type="text" id="niche" name="niche" placeholder="e.g. programming education" maxlength="80">
+        </label>
+
+        <label class="field">
+          <span class="field__label">Audience</span>
+          <input type="text" id="audience" name="audience" placeholder="e.g. complete beginners" maxlength="120">
+        </label>
+
+        <label class="field">
+          <span class="field__label">Tone</span>
+          <input type="text" id="tone" name="tone" placeholder="e.g. casual and energetic" maxlength="60">
+        </label>
+
+        <label class="field">
+          <span class="field__label">Language</span>
+          <input type="text" id="language" name="language" value="English" maxlength="40">
+        </label>
+
+        <label class="field">
+          <span class="field__label">Length</span>
+          <select id="length" name="length">
+            <option value="shorts">Shorts (&lt;60s)</option>
+            <option value="short_form">Short-form (1–3 min)</option>
+            <option value="medium" selected>Medium (5–8 min)</option>
+            <option value="long_form">Long-form (10–15+ min)</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span class="field__label">LLM provider</span>
+          <select id="provider" name="provider" required>
+            <option value="" disabled selected>Loading available providers…</option>
+          </select>
+        </label>
+      </div>
+
+      <p class="provider-hint" id="provider-hint"></p>
+
+      <button type="submit" id="submit-btn" class="btn-run">
+        <span class="btn-run__label">Run agent</span>
+        <span class="btn-run__spinner" hidden></span>
+      </button>
+    </form>
+  </section>
+
+  <!-- RIGHT: pipeline rail + output -->
+  <section class="panel panel--pipeline">
+    <h2 class="panel__title">Pipeline</h2>
+
+    <ol class="rail" id="rail">
+      <li class="rail__step" data-step="script">
+        <span class="rail__node"></span>
+        <div class="rail__body">
+          <span class="rail__name">01 · Script</span>
+          <span class="rail__status">waiting</span>
+        </div>
+      </li>
+      <li class="rail__step" data-step="titles">
+        <span class="rail__node"></span>
+        <div class="rail__body">
+          <span class="rail__name">02 · Titles</span>
+          <span class="rail__status">waiting</span>
+        </div>
+      </li>
+      <li class="rail__step" data-step="description">
+        <span class="rail__node"></span>
+        <div class="rail__body">
+          <span class="rail__name">03 · Description</span>
+          <span class="rail__status">waiting</span>
+        </div>
+      </li>
+      <li class="rail__step" data-step="tags">
+        <span class="rail__node"></span>
+        <div class="rail__body">
+          <span class="rail__name">04 · Tags</span>
+          <span class="rail__status">waiting</span>
+        </div>
+      </li>
+      <li class="rail__step" data-step="thumbnail">
+        <span class="rail__node"></span>
+        <div class="rail__body">
+          <span class="rail__name">05 · Thumbnail concept</span>
+          <span class="rail__status">waiting</span>
+        </div>
+      </li>
+    </ol>
+
+    <div class="output" id="output">
+      <p class="output__empty" id="output-empty">Output will appear here as each step finishes — you don't have to wait for the whole pipeline to see the script.</p>
+    </div>
+  </section>
+
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
